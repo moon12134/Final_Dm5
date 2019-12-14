@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+
+    <string name="genre_new">更新</string>
+    <string name="genre_list">全部</string>
+    <string name="genre_rexue">热血</string>
+    <string name="genre_aiqing">恋爱</string>
+    <string name="genre_xiaoyuan">校园</string>
+    <string name="genre_baihe">百合</string>
+    <string name="genre_danmei">彩虹</string>
+    <string name="genre_maoxian">冒险</string>
+    <string name="genre_hougong">后宫</string>
+    <string name="genre_kehuan">科幻</string>
+    <string name="genre_zhanzheng">战争</string>
+    <string name="genre_xuanyi">悬疑</string>
+    <string name="genre_zhentan">推理</string>
+    <string name="genre_gaoxiao">搞笑</string>
+    <string name="genre_qihuan">奇幻</string>
+    <string name="genre_mofa">魔法</string>
+    <string name="genre_kongbu">恐怖</string>
+    <string name="genre_dongfangshengui">神鬼</string>
+    <string name="genre_lishi">历史</string>
+    <string name="genre_tongren">同人</string>
+    <string name="genre_jingji">运动</string>
+    <string name="genre_jiecao">绅士</string>
+    <string name="genre_jizhan">机甲</string>
+    <string name="genre_18_x">限制级</string>
+</resources>
