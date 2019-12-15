@@ -6,6 +6,7 @@
     </shared>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="2e575b68-1d6e-4583-8580-05c7be282931" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/com/example/myapplication/Providers/Chapter/chapterLink.java" afterDir="false" />
@@ -21,6 +22,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/manga_preview.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/res/layout/manga_preview_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/manga_preview_item.xml" afterDir="false" />
     </list>
+=======
+    <list default="true" id="2e575b68-1d6e-4583-8580-05c7be282931" name="Default Changelist" comment="" />
+>>>>>>> master
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,8 +48,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Manga_preview.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-190">
               <caret line="61" column="37" lean-forward="true" selection-start-line="61" selection-start-column="37" selection-end-line="61" selection-end-column="37" />
+=======
+            <state relative-caret-position="190">
+              <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -53,8 +62,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/MangaPage.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="304">
               <caret line="121" selection-start-line="121" selection-end-line="123" selection-end-column="80" />
+=======
+            <state relative-caret-position="589">
+              <caret line="104" selection-start-line="104" selection-end-line="104" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -62,12 +76,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="570">
               <caret line="81" selection-start-line="81" selection-end-line="81" />
               <folding>
                 <element signature="e#1114#1724#0" expanded="true" />
                 <element signature="e#1723#1724#0" expanded="true" />
               </folding>
+=======
+            <state relative-caret-position="779">
+              <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -85,8 +104,13 @@
         <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_manga_preview.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="228">
               <caret line="12" column="33" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="33" />
+=======
+            <state>
+              <caret line="8" column="52" selection-start-line="8" selection-start-column="52" selection-end-line="8" selection-end-column="52" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -96,7 +120,11 @@
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="79">
+<<<<<<< HEAD
               <caret line="8" column="27" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="27" />
+=======
+              <caret line="8" column="34" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="34" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -114,8 +142,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Mange_chapter.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="57">
               <caret line="113" selection-start-line="113" selection-end-line="134" selection-end-column="13" />
+=======
+            <state relative-caret-position="209">
+              <caret line="13" selection-start-line="13" selection-end-line="13" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -123,8 +156,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Providers/ProviderDm5.java">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
             <state relative-caret-position="-287">
               <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+=======
+            <state relative-caret-position="-116">
+              <caret line="40" column="22" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+>>>>>>> master
             </state>
           </provider>
         </entry>
@@ -212,9 +250,14 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="771" />
     <option name="y" value="-19" />
+=======
+  <component name="ProjectFrameBounds">
+    <option name="x" value="952" />
+>>>>>>> master
     <option name="width" value="977" />
     <option name="height" value="1038" />
   </component>
@@ -360,7 +403,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+=======
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+>>>>>>> master
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.13069706" />
@@ -446,8 +493,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Providers/ProviderDm5.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-287">
           <caret line="44" column="22" selection-start-line="44" selection-start-column="22" selection-end-line="44" selection-end-column="22" />
+=======
+        <state relative-caret-position="-116">
+          <caret line="40" column="22" selection-start-line="40" selection-start-column="22" selection-end-line="40" selection-end-column="22" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -462,25 +514,39 @@
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="79">
+<<<<<<< HEAD
           <caret line="8" column="27" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="27" />
+=======
+          <caret line="8" column="34" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="34" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Mange_chapter.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="57">
           <caret line="113" selection-start-line="113" selection-end-line="134" selection-end-column="13" />
+=======
+        <state relative-caret-position="209">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="570">
           <caret line="81" selection-start-line="81" selection-end-line="81" />
           <folding>
             <element signature="e#1114#1724#0" expanded="true" />
             <element signature="e#1723#1724#0" expanded="true" />
           </folding>
+=======
+        <state relative-caret-position="779">
+          <caret line="67" column="5" selection-start-line="67" selection-start-column="5" selection-end-line="67" selection-end-column="5" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -493,8 +559,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/MangaPage.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="304">
           <caret line="121" selection-start-line="121" selection-end-line="123" selection-end-column="80" />
+=======
+        <state relative-caret-position="589">
+          <caret line="104" selection-start-line="104" selection-end-line="104" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
@@ -509,15 +580,25 @@
     <entry file="file://$PROJECT_DIR$/src/main/res/layout/activity_manga_preview.xml">
       <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="228">
           <caret line="12" column="33" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="33" />
+=======
+        <state>
+          <caret line="8" column="52" selection-start-line="8" selection-start-column="52" selection-end-line="8" selection-end-column="52" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/example/myapplication/Manga_preview.java">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="-190">
           <caret line="61" column="37" lean-forward="true" selection-start-line="61" selection-start-column="37" selection-end-line="61" selection-end-column="37" />
+=======
+        <state relative-caret-position="190">
+          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+>>>>>>> master
         </state>
       </provider>
     </entry>
