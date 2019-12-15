@@ -3,6 +3,8 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,11 @@ import com.example.myapplication.Providers.Page.MangaInfo;
 import com.example.myapplication.Providers.Page.MangaList;
 import com.example.myapplication.Providers.ProviderDm5;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -26,19 +34,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     MangaInfo m = new MangaInfo();
-                    m.path = "/manhua-jingqi-woheshashoujihunlema/";
+                    //m.path = "/manhua-jingqi-woheshashoujihunlema/";
                     ProviderDm5 Dm= new ProviderDm5();
-                    MangaSummary page = Dm.getDetailInfo(m);
+                    Log.e("aaa",Dm.getChapterImageUrl("m945091-p1"));
+                    //Dm.getchapter("/m938440/");
+                    //Log.e("aaa",String.valueOf(a));
+                    //Dm.getchapter("/m938440/");
+                    //MangaSummary page = Dm.getDetailInfo(m);
                 }catch (Exception e){
                     Log.e("error",e.toString());
                 }
             }
         }).start();
+
+
 
         final Intent intent =new Intent(this, MangaPage.class);
         MangaList mangaList= new MangaList();
@@ -51,12 +66,10 @@ public class MainActivity extends AppCompatActivity {
             mangaList.add(mangaInfo);
         }
 
-
         MyAdapter cubeeAdapter = new MyAdapter(mangaList);
         GridView gridView = findViewById(R.id.gridView);
         gridView.setAdapter(cubeeAdapter);
         gridView.setNumColumns(3);
-        //runAsyncTask();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -66,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private class MyAdapter extends BaseAdapter{
         private MangaList m;
         public MyAdapter(MangaList mangaList){

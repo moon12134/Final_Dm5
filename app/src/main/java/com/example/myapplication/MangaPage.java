@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,14 +36,7 @@ public class MangaPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_page);
         int data = getIntent().getExtras().getInt("gerens");
-
         runAsyncTask(data);
-
-
-
-
-
-
     }
     private class MyAdapter extends BaseAdapter {
         private MangaList m;
@@ -68,6 +62,29 @@ public class MangaPage extends AppCompatActivity {
             name.setText(m.get(position).name);
             TextView status= convertView.findViewById(R.id.status);
             status.setText(m.get(position).status);
+
+            try {
+                final ImageView imageView =convertView.findViewById(R.id.IW);
+                Log.e("aaaaaaaaaaaaaaaaa",m.get(position).imageUrl);
+                new AsyncTask<String, Void, Bitmap>()
+                {
+                    @Override
+                    protected Bitmap doInBackground(String... params)
+                    {
+                        String url = params[0];
+                        return getBitmapFromURL(url);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Bitmap result)
+                    {
+                        imageView. setImageBitmap (result);
+                        super.onPostExecute(result);
+                    }
+                }.execute(m.get(position).imageUrl);
+            }catch (Exception e){
+                Log.e("getBitmapFromURL",e.toString());
+            }
             //ImageView imageView = convertView.findViewById(R.id.iw);
             //imageView.setImageBitmap(m.get(position).preview));
             return convertView;
@@ -90,7 +107,7 @@ public class MangaPage extends AppCompatActivity {
                 super.onProgressUpdate();
             }
             @Override
-            protected void  onPostExecute(MangaList mangaList){
+            protected void  onPostExecute(final MangaList mangaList){
                 super.onPostExecute(mangaList);
                 final Intent intent =new Intent(MangaPage.this, Manga_preview.class);
                     MyAdapter cubeeAdapter = new MyAdapter(mangaList);
@@ -102,7 +119,9 @@ public class MangaPage extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                         Toast.makeText(MangaPage.this, "" + position, Toast.LENGTH_SHORT).show();
-                        intent.putExtra("gerens",position);
+                        intent.putExtra("path_MP",mangaList.get(position).path);
+                        intent.putExtra("imagaUrl_MP",mangaList.get(position).imageUrl);
+                        intent.putExtra("name_MP",mangaList.get(position).name);
                         startActivity(intent);
                     }
                 });
@@ -110,5 +129,22 @@ public class MangaPage extends AppCompatActivity {
 
         }.execute(data);
     }
-
+    private synchronized static Bitmap getBitmapFromURL(String imageUrl)
+    {
+        try
+        {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap = BitmapFactory.decodeStream(input);
+            return bitmap;
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

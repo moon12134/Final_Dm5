@@ -5,6 +5,7 @@ public class MangaInfo {
     public String path;
     public String preview;
     public String status;
+    public String imageUrl;
         public void MangaInfo(){
 
     }

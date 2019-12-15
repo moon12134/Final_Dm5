@@ -4,8 +4,9 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/cahpter_item"
+        android:id="@+id/preview_item"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:text="Cahpter_name" />
+        android:layout_height="60dp"
+        android:text="Cahpter_name"
+        android:textSize="40dp" />
 </LinearLayout>
