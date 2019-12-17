@@ -103,7 +103,8 @@ public class ProviderDm5 {
         String ReadLink = "m945513";
         String path ="https://www.dm5.com/"+ReadLink;
         Document doc = Jsoup.connect(path).get();
-        Log.e("HTML", doc.getElementsByAttributeValue("class","var").toString());
+        Elements elements = doc.getElementsByTag("script").eq(9);
+        Log.e("HTML", elements.toString());
         return url;
     }
 }
