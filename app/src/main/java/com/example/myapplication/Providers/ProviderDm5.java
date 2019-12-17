@@ -100,15 +100,11 @@ public class ProviderDm5 {
         return arrayList;
     }
     public String getChapterImageUrl(String url)throws Exception{
-        Connection.Response response = Jsoup.connect("https://cnc.dm5.com/" + url).execute();
-        Log.e("aaaa","https://cnc.dm5.com/" + url);
-        Document doc = Jsoup.parse(response.body());
-        Element tmc = doc.getElementsByAttributeValue("id","cp_img").first();
-        Log.e("description", tmc.toString());
+        String ReadLink = "m945513";
+        String path ="https://www.dm5.com/"+ReadLink;
+        Document doc = Jsoup.connect(path).get();
+        Log.e("HTML", doc.getElementsByAttributeValue("class","var").toString());
         return url;
     }
-
-
-
 }
 

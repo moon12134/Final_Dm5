@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     MangaInfo m = new MangaInfo();
                     //m.path = "/manhua-jingqi-woheshashoujihunlema/";
                     ProviderDm5 Dm= new ProviderDm5();
-                    Log.e("aaa",Dm.getChapterImageUrl("m945091-p1"));
+                    Log.e("aaa",Dm.getChapterImageUrl("m945091"));
                     //Dm.getchapter("/m938440/");
                     //Log.e("aaa",String.valueOf(a));
                     //Dm.getchapter("/m938440/");

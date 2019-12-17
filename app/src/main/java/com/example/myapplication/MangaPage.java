@@ -65,7 +65,6 @@ public class MangaPage extends AppCompatActivity {
 
             try {
                 final ImageView imageView =convertView.findViewById(R.id.IW);
-                Log.e("aaaaaaaaaaaaaaaaa",m.get(position).imageUrl);
                 new AsyncTask<String, Void, Bitmap>()
                 {
                     @Override
@@ -78,6 +77,7 @@ public class MangaPage extends AppCompatActivity {
                     @Override
                     protected void onPostExecute(Bitmap result)
                     {
+
                         imageView. setImageBitmap (result);
                         super.onPostExecute(result);
                     }
@@ -85,8 +85,6 @@ public class MangaPage extends AppCompatActivity {
             }catch (Exception e){
                 Log.e("getBitmapFromURL",e.toString());
             }
-            //ImageView imageView = convertView.findViewById(R.id.iw);
-            //imageView.setImageBitmap(m.get(position).preview));
             return convertView;
         }
     }
@@ -118,7 +116,7 @@ public class MangaPage extends AppCompatActivity {
                     gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                        Toast.makeText(MangaPage.this, "" + position, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MangaPage.this, "" + position, Toast.LENGTH_SHORT).show();
                         intent.putExtra("path_MP",mangaList.get(position).path);
                         intent.putExtra("imagaUrl_MP",mangaList.get(position).imageUrl);
                         intent.putExtra("name_MP",mangaList.get(position).name);
