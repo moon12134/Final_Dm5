@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import org.jsoup.Connection;
+import org.jsoup.nodes.Document;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -17,15 +19,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Providers.Chapter.chapterLink;
 import com.example.myapplication.Providers.MangaSummary;
 import com.example.myapplication.Providers.Page.MangaInfo;
 import com.example.myapplication.Providers.Page.MangaList;
 import com.example.myapplication.Providers.ProviderDm5;
 
+import org.jsoup.Jsoup;
+//import org.w3c.dom.Document;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,15 +50,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     MangaInfo m = new MangaInfo();
-                    //m.path = "/manhua-jingqi-woheshashoujihunlema/";
                     ProviderDm5 Dm= new ProviderDm5();
-                    Log.e("aaa",Dm.getChapterImageUrl("m945091"));
+                    chapterLink chapterLinks ;
+                    Log.e("chapterNumber",String.valueOf(Dm.getChapterPage("m945091")));
+
+                    chapterLinks = Dm.getChapterImageUrl("m945091","1");
+
+                    Log.e("aaa",chapterLinks.imUrl);
+                    Log.e("aaa",chapterLinks.Referer);
                     //Dm.getchapter("/m938440/");
                     //Log.e("aaa",String.valueOf(a));
                     //Dm.getchapter("/m938440/");
@@ -52,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
-
 
         final Intent intent =new Intent(this, MangaPage.class);
         MangaList mangaList= new MangaList();

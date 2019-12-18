@@ -38,11 +38,13 @@ public class Mange_chapter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mange_chapter);
         String url = getIntent().getExtras().getString("aaaaaa");
-        //TextView textView = findViewById(R.id.ImageLink);
-        //textView.setText(url);
-        Log.e("aaaaaa", url);
-        runAsyncTask(url);
+        Log.e("/mXXXXXX/", url);
+        //runAsyncTask(url);
     }
+
+
+
+    /*
     private void runAsyncTask(final String url){
         new AsyncTask<String,Integer, ArrayList<chapterLink>>(){
             @Override
@@ -69,8 +71,8 @@ public class Mange_chapter extends AppCompatActivity {
             }
 
         }.execute(url);
-    }
-    private synchronized static Bitmap getBitmapFromURL(String imageUrl)
+    }*/
+    private synchronized Bitmap getBitmapFromURL(String imageUrl)
     {
         try
         {
@@ -88,7 +90,7 @@ public class Mange_chapter extends AppCompatActivity {
             return null;
         }
     }
-
+/*
     private class MyAdapter extends BaseAdapter {
         private ArrayList<chapterLink> m;
         public MyAdapter(ArrayList<chapterLink> chapters){
@@ -136,5 +138,5 @@ public class Mange_chapter extends AppCompatActivity {
             return convertView;
         }
     }
-
+*/
 }
