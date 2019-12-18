@@ -109,9 +109,10 @@ public class ProviderDm5 {
         _dt = strings[24].split("=")[1].split(";")[0].replace("\"","");//DM5_VIEWSIGN_DT
         //Log.e("_mid",_mid);Log.e("_cid",_cid);Log.e("sign",sign);Log.e("_dt",_dt);
         String doc_code="";
-        for(int i =0;i<5;i++){
+        for(int i =0;i<8;i++){
             Log.e("TIME:",String.valueOf(i));
             try {
+                Thread.sleep(500);
                 Document document = Jsoup.connect("https://www.dm5.com/" + chapterPath + "/" + "chapterfun.ashx").data("cid", cid, "page", page, "key", "", "language", language, "gtk", gtk, "_cid", _cid, "_mid", _mid, "_dt", _dt, "_sign", sign)
                         .header("Content-Type", "application/x-www-form-urlencoded").
                                 header("DNT", "1").

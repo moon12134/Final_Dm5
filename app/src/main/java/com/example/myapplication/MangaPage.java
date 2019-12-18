@@ -127,7 +127,7 @@ public class MangaPage extends AppCompatActivity {
 
         }.execute(data);
     }
-    private synchronized static Bitmap getBitmapFromURL(String imageUrl)
+    private synchronized Bitmap getBitmapFromURL(String imageUrl)
     {
         try
         {

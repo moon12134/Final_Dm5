@@ -29,7 +29,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.X509TrustManager;
 
 public class Mange_chapter extends AppCompatActivity {
 
@@ -38,21 +47,61 @@ public class Mange_chapter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mange_chapter);
         String url = getIntent().getExtras().getString("aaaaaa");
+        url=url.replace("/","");
         Log.e("/mXXXXXX/", url);
-        //runAsyncTask(url);
+
+        try {
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }});
+            SSLContext context = SSLContext.getInstance("TLS");
+            context.init(null, new X509TrustManager[]{new X509TrustManager(){
+                public void checkClientTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {}
+                public void checkServerTrusted(X509Certificate[] chain,
+                                               String authType) throws CertificateException {}
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }}}, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(
+                    context.getSocketFactory());
+        } catch (Exception e) { // should never happen
+            e.printStackTrace();
+        }
+
+        runAsyncTask(url);
     }
 
-
-
-    /*
-    private void runAsyncTask(final String url){
-        new AsyncTask<String,Integer, ArrayList<chapterLink>>(){
+    private void runAsyncTask(String url){
+        new AsyncTask<String,Integer, ArrayList<Bitmap>>(){
             @Override
-            protected ArrayList<chapterLink> doInBackground(String... data){
-                try {
-                    ProviderDm5 Dm5= new ProviderDm5();
-                    ArrayList<chapterLink> page = Dm5.getchapter(data[0]);
-                    return page;
+            protected ArrayList<Bitmap> doInBackground(String... data){
+                ProviderDm5 dm5=new ProviderDm5();
+                //抓到bitmap 存成 arraylist
+                ArrayList<Bitmap> bitmaps = new ArrayList<>();
+                chapterLink chapterLink =new chapterLink();
+                try{
+                    for(int i =1;i<dm5.getChapterPage(data[0])+1;i++){
+                        //chapterLink.add(dm5.getChapterImageUrl(data[0],String.valueOf(i)));
+                        chapterLink = dm5.getChapterImageUrl(data[0],String.valueOf(i));
+                        //chapterLink.Referer = dm5.getChapterImageUrl(data[0],String.valueOf(i)).Referer;
+                        //chapterLink.imUrl = dm5.getChapterImageUrl(data[0],String.valueOf(i)).imUrl;
+
+                        String imgUrl = chapterLink.imUrl;
+                        URL url = new URL(imgUrl);
+                        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                        connection.setDoInput(true);
+                        connection.setRequestMethod("GET");
+                        //connection.setRequestProperty("Host","manhua1025-104-250-150-12.cdndm5.com");
+                        connection.setRequestProperty("Referer",chapterLink.Referer);
+                        //connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101 Firefox/38.0");
+                        connection.connect();
+                        InputStream input = connection.getInputStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(input);
+                        bitmaps.add(bitmap);
+                    }
+                    return bitmaps;
                 }catch (Exception e){
                     return null;
                 }
@@ -62,39 +111,22 @@ public class Mange_chapter extends AppCompatActivity {
                 super.onProgressUpdate();
             }
             @Override
-            protected void  onPostExecute(final ArrayList<chapterLink> page){
-                super.onPostExecute(page);
-                MyAdapter cubeeAdapter = new MyAdapter(page);
+            protected void  onPostExecute(final ArrayList<Bitmap> Bitmap){
+                super.onPostExecute(Bitmap);
+                //將ArrayList<bitmap>放入
+                MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
                 GridView gridView = findViewById(R.id.gv_manga_chapter);
                 gridView.setAdapter(cubeeAdapter);
 
             }
 
         }.execute(url);
-    }*/
-    private synchronized Bitmap getBitmapFromURL(String imageUrl)
-    {
-        try
-        {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(input);
-            return bitmap;
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
     }
-/*
+
     private class MyAdapter extends BaseAdapter {
-        private ArrayList<chapterLink> m;
-        public MyAdapter(ArrayList<chapterLink> chapters){
-            m=chapters;
+        private ArrayList<Bitmap> m;
+        public MyAdapter(ArrayList<Bitmap> bitmaps){
+            m=bitmaps;
         }
         @Override
         public  int getCount(){
@@ -111,32 +143,11 @@ public class Mange_chapter extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
             convertView = getLayoutInflater().inflate(R.layout.manga_chapter_item,parent,false);
-            TextView name= convertView.findViewById(R.id.ImageLink);
-            name.setText(m.get(position).url);
-            try {
-                final ImageView imageView =convertView.findViewById(R.id.imageView2);
-                Log.e("aaaaaaaaaaaaaaaaa","https://cnc.dm5.com/"+m.get(position).url);
-                new AsyncTask<String, Void, Bitmap>()
-                {
-                    @Override
-                    protected Bitmap doInBackground(String... params)
-                    {
-                        String url = params[0];
-                        return getBitmapFromURL(url);
-                    }
-
-                    @Override
-                    protected void onPostExecute(Bitmap result)
-                    {
-                        imageView. setImageBitmap (result);
-                        super.onPostExecute(result);
-                    }
-                }.execute("https://cnc.dm5.com/"+m.get(position).url);
-            }catch (Exception e){
-                Log.e("getBitmapFromURL",e.toString());
-            }
+            /*TextView name= convertView.findViewById(R.id.ImageLink);
+            name.setText(m.get(position).url);*/
+            final ImageView imageView =convertView.findViewById(R.id.imageView2);
+                imageView.setImageBitmap(m.get(position));
             return convertView;
         }
     }
-*/
 }

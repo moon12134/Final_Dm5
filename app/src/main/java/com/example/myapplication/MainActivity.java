@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+/*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-
+*/
         final Intent intent =new Intent(this, MangaPage.class);
         MangaList mangaList= new MangaList();
         String genres[] = {"更新","全部","热血","恋爱","校园","百合","彩虹","冒险","后宫","科幻",
