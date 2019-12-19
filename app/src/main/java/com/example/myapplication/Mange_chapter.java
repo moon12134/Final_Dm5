@@ -42,43 +42,67 @@ import javax.net.ssl.X509TrustManager;
 
 public class Mange_chapter extends AppCompatActivity {
 
+    public int chapterPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_mange_chapter);
-        String url = getIntent().getExtras().getString("Chapter_ReadLink");
-        url=url.replace("/","");
+        final String url = getIntent().getExtras().getString("Chapter_ReadLink").replace("/", "");
         //Log.e("/mXXXXXX/", url);
         try {
-            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
                 public boolean verify(String hostname, SSLSession session) {
                     return true;
-                }});
+                }
+            });
             SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, new X509TrustManager[]{new X509TrustManager(){
+            context.init(null, new X509TrustManager[]{new X509TrustManager() {
                 public void checkClientTrusted(X509Certificate[] chain,
-                                               String authType) throws CertificateException {}
+                                               String authType) throws CertificateException {
+                }
+
                 public void checkServerTrusted(X509Certificate[] chain,
-                                               String authType) throws CertificateException {}
+                                               String authType) throws CertificateException {
+                }
+
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];
-                }}}, new SecureRandom());
+                }
+            }}, new SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(
                     context.getSocketFactory());
         } catch (Exception e) { // should never happen
             e.printStackTrace();
         }
-        runAsyncTask(url);
-        ProviderDm5 dm5=new ProviderDm5();
-        int chapterPage;
-        try {
-            chapterPage = dm5.getChapterPage(url);
-        }catch (Exception e){
+        //以上解決FTTPS協定問題
+        final ProviderDm5 dm5 = new ProviderDm5();
+        final ArrayList<Bitmap> bitmaps = new ArrayList<>(chapterPage);
+        for (int i = 0; i < 50; i++) {
+            bitmaps.add(null);
         }
-
+        Adapter(bitmaps);
+        runAsyncTask(url);
     }
-
+    private void Adapter(ArrayList<Bitmap> bitmaps){                             //Get image Bitmap amd push into imageView
+        new AsyncTask<ArrayList<Bitmap>,Integer, ArrayList<Bitmap>>(){
+            @Override
+            protected ArrayList doInBackground(ArrayList<Bitmap>... url){
+                return url[0];
+            }
+            @Override
+            protected void onProgressUpdate(Integer... values){
+                super.onProgressUpdate();
+            }
+            @Override
+            protected void  onPostExecute(ArrayList<Bitmap> Bitmap){
+                super.onPostExecute(Bitmap);
+                MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
+                GridView gridView = findViewById(R.id.gv_manga_chapter);
+                gridView.setAdapter(cubeeAdapter);
+            }
+        }.execute(bitmaps);
+    }
     private void runAsyncTask(String url){
         new AsyncTask<String,Integer, ArrayList<Bitmap>>(){
             @Override
@@ -88,7 +112,7 @@ public class Mange_chapter extends AppCompatActivity {
                 ArrayList<Bitmap> bitmaps = new ArrayList<>();
                 chapterLink chapterLink =new chapterLink();
                 try{
-                    for(int i =1;i<dm5.getChapterPage(data[0])+1;i++){
+                    for(int i =0;i<dm5.getChapterPage(data[0]);i++){
                         //chapterLink.add(dm5.getChapterImageUrl(data[0],String.valueOf(i)));
                         chapterLink = dm5.getChapterImageUrl(data[0],String.valueOf(i));
                         //chapterLink.Referer = dm5.getChapterImageUrl(data[0],String.valueOf(i)).Referer;
@@ -106,6 +130,7 @@ public class Mange_chapter extends AppCompatActivity {
                         InputStream input = connection.getInputStream();
                         Bitmap bitmap = BitmapFactory.decodeStream(input);
                         bitmaps.add(bitmap);
+                        m.set(i,bitmap);
                     }
                     return bitmaps;
                 }catch (Exception e){
@@ -120,21 +145,18 @@ public class Mange_chapter extends AppCompatActivity {
             protected void  onPostExecute(final ArrayList<Bitmap> Bitmap){
                 super.onPostExecute(Bitmap);
                 //將ArrayList<bitmap>放入
-                MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
-                GridView gridView = findViewById(R.id.gv_manga_chapter);
-                gridView.setAdapter(cubeeAdapter);
             }
         }.execute(url);
     }
-
+    public ArrayList<Bitmap> m;
     private class MyAdapter extends BaseAdapter {
-        private ArrayList<Bitmap> m;
+
         public MyAdapter(ArrayList<Bitmap> bitmaps){
             m=bitmaps;
         }
         @Override
         public  int getCount(){
-            return  this.m.size();
+            return  m.size();
         }
         @Override
         public Object getItem(int position){
@@ -148,7 +170,11 @@ public class Mange_chapter extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent){
             convertView = getLayoutInflater().inflate(R.layout.manga_chapter_item,parent,false);
             final ImageView imageView =convertView.findViewById(R.id.imageView2);
-            imageView.setImageBitmap(m.get(position));
+            if(m.get(position)!=null){
+                imageView.setImageBitmap(m.get(position));
+            }else {
+                imageView.setImageResource(R.drawable.chapter_loading);
+            }
             return convertView;
         }
     }

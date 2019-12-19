@@ -112,7 +112,7 @@ public class ProviderDm5 {
         _dt = strings[24].split("=")[1].split(";")[0].replace("\"","");//DM5_VIEWSIGN_DT
         //Log.e("_mid",_mid);Log.e("_cid",_cid);Log.e("sign",sign);Log.e("_dt",_dt);
         String doc_code="";
-        for(int i =0;i<8;i++){
+        for(int i =0;i<20;i++){
             Log.e("TIME:",String.valueOf(i));
             try {
                 Thread.sleep(10);

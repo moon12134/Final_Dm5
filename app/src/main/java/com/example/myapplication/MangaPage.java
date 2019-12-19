@@ -73,8 +73,10 @@ public class MangaPage extends AppCompatActivity {
                         intent.putExtra("name_MP",mangaList.get(position).name);
                         intent.putExtra("imgBitmap",mangaList.get(position).imageUrl_bitmap);
                         startActivity(intent);
+
                     }
                 });
+
             }
 
         }.execute(data);
@@ -100,16 +102,16 @@ public class MangaPage extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent){
             ViewHolder holder;
 
-            //if (convertView == null) {
+            if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.manga_adapter, parent, false);
                 holder = new ViewHolder();
                 holder.textView =convertView.findViewById(R.id.name);
                 holder.textView_status=convertView.findViewById(R.id.status);
                 holder.thumbnail=convertView.findViewById(R.id.IW);
                 convertView.setTag(holder);
-            //}else
+            }else {
                 holder = (ViewHolder) convertView.getTag();
-
+            }
             holder.textView.setText(m.get(position).name);
             holder.textView_status.setText(m.get(position).status);
             holder.position = position;
