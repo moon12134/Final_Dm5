@@ -115,25 +115,13 @@ public class ProviderDm5 {
         for(int i =0;i<8;i++){
             Log.e("TIME:",String.valueOf(i));
             try {
-                Thread.sleep(500);
-                Document document = Jsoup.connect("https://www.dm5.com/" + chapterPath + "/" + "chapterfun.ashx").data("cid", cid, "page", page, "key", "", "language", language, "gtk", gtk, "_cid", _cid, "_mid", _mid, "_dt", _dt, "_sign", sign)
-                        .header("Content-Type", "application/x-www-form-urlencoded").
-                                header("DNT", "1").
-                                header("Referer", "http://www.dm5.com/"+chapterPath).
-                                header("X-Requested-With", "XMLHttpRequest").
-                                header("Accept", "application/json, text/javascript, */*").
-                                header("Cache-Control", "max-age=0").
-                                header("Cookie", "view__arr=2; DM5_MACHINEKEY=77ef7dca-dfc4-4591-9265-dc7c957e9fb7; ComicHistoryitem_zh=History=20874,636014114212838098,226138,1,0,0,0,1|8165,636014132239641107,97094,1,0,0,0,8&ViewType=0; fastshow=true; readhistory_time=1-8165-97094-1; image_time_cookie=226138|636014114212798040|0,97094|636014132240982426|0; dm5imgpage=226138|1:1:46:0,97094|1:1:34:0; dm5cookieenabletest=1; dm5imgcooke=226138%7C2%2C97094%7C2").
-                                header("If-Modified-Since", "Tue, 17 Dec 2024 18:38:09 GMT").
-                                header("Upgrade-Insecure-Requests", "1").
-                                header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36").get();
-                if(document.text().length()==0&&i==4){
-                    Log.e("TOO MANY TIME","");
-                    break;
-                }
-                else if (document.text().length()!=0) {
+                Thread.sleep(10);
+                Document document = Jsoup.connect("https://www.dm5.com/" + chapterPath + "/" + "chapterfun.ashx").data("cid", cid, "page", page, "key", "", "language", language, "gtk", gtk, "_cid", _cid, "_mid", _mid, "_dt", _dt, "_sign", sign).
+                                header("Referer", "http://www.dm5.com/"+chapterPath)
+                                .get();
+                if (document.text().length()!=0) {
                     doc_code = document.body().text();
-                    Log.e("1", doc_code);
+                    //Log.e("1", doc_code);
                     break;
                 }
             }catch (Exception e){

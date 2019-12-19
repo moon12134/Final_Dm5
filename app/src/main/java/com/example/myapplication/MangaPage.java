@@ -71,6 +71,7 @@ public class MangaPage extends AppCompatActivity {
                         intent.putExtra("path_MP",mangaList.get(position).path);
                         intent.putExtra("imagaUrl_MP",mangaList.get(position).imageUrl);
                         intent.putExtra("name_MP",mangaList.get(position).name);
+                        intent.putExtra("imgBitmap",mangaList.get(position).imageUrl_bitmap);
                         startActivity(intent);
                     }
                 });
@@ -99,21 +100,25 @@ public class MangaPage extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent){
             ViewHolder holder;
 
-            if (convertView == null) {
+            //if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.manga_adapter, parent, false);
                 holder = new ViewHolder();
                 holder.textView =convertView.findViewById(R.id.name);
                 holder.textView_status=convertView.findViewById(R.id.status);
                 holder.thumbnail=convertView.findViewById(R.id.IW);
                 convertView.setTag(holder);
-            }else {
+            //}else
                 holder = (ViewHolder) convertView.getTag();
-            }
+
             holder.textView.setText(m.get(position).name);
             holder.textView_status.setText(m.get(position).status);
             holder.position = position;
-            new ThumbnailTask(position, holder,m.get(position).imageUrl)
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+            if (m.get(position).imageUrl_bitmap==null){
+                new ThumbnailTask(position, holder,m.get(position).imageUrl)
+                        .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+            }else {
+                holder.thumbnail.setImageBitmap(m.get(position).imageUrl_bitmap);
+            }
             return convertView;
         }
     }

@@ -45,11 +45,11 @@ public class Mange_chapter extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_mange_chapter);
-        String url = getIntent().getExtras().getString("aaaaaa");
+        String url = getIntent().getExtras().getString("Chapter_ReadLink");
         url=url.replace("/","");
-        Log.e("/mXXXXXX/", url);
-        //From https://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https/6378872#6378872
+        //Log.e("/mXXXXXX/", url);
         try {
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
                 public boolean verify(String hostname, SSLSession session) {
@@ -69,8 +69,14 @@ public class Mange_chapter extends AppCompatActivity {
         } catch (Exception e) { // should never happen
             e.printStackTrace();
         }
-
         runAsyncTask(url);
+        ProviderDm5 dm5=new ProviderDm5();
+        int chapterPage;
+        try {
+            chapterPage = dm5.getChapterPage(url);
+        }catch (Exception e){
+        }
+
     }
 
     private void runAsyncTask(String url){
@@ -117,9 +123,7 @@ public class Mange_chapter extends AppCompatActivity {
                 MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
                 GridView gridView = findViewById(R.id.gv_manga_chapter);
                 gridView.setAdapter(cubeeAdapter);
-
             }
-
         }.execute(url);
     }
 
@@ -143,10 +147,8 @@ public class Mange_chapter extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
             convertView = getLayoutInflater().inflate(R.layout.manga_chapter_item,parent,false);
-            /*TextView name= convertView.findViewById(R.id.ImageLink);
-            name.setText(m.get(position).url);*/
             final ImageView imageView =convertView.findViewById(R.id.imageView2);
-                imageView.setImageBitmap(m.get(position));
+            imageView.setImageBitmap(m.get(position));
             return convertView;
         }
     }
