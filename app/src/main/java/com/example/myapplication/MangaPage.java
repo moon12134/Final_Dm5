@@ -35,58 +35,8 @@ public class MangaPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_page);
-        int data = getIntent().getExtras().getInt("gerens");
+        int data = getIntent().getExtras().getInt("Gerens");
         runAsyncTask(data);
-    }
-    private class MyAdapter extends BaseAdapter {
-        private MangaList m;
-        public MyAdapter(MangaList mangaList){
-            m=mangaList;
-        }
-        @Override
-        public  int getCount(){
-            return  this.m.size();
-        }
-        @Override
-        public Object getItem(int position){
-            return m.get(position);
-        }
-        @Override
-        public  long getItemId(int position){
-            return 0;
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            convertView = getLayoutInflater().inflate(R.layout.manga_adapter,parent,false);
-            TextView name= convertView.findViewById(R.id.name);
-            name.setText(m.get(position).name);
-            TextView status= convertView.findViewById(R.id.status);
-            status.setText(m.get(position).status);
-
-            try {
-                final ImageView imageView =convertView.findViewById(R.id.IW);
-                new AsyncTask<String, Void, Bitmap>()
-                {
-                    @Override
-                    protected Bitmap doInBackground(String... params)
-                    {
-                        String url = params[0];
-                        return getBitmapFromURL(url);
-                    }
-
-                    @Override
-                    protected void onPostExecute(Bitmap result)
-                    {
-
-                        imageView. setImageBitmap (result);
-                        super.onPostExecute(result);
-                    }
-                }.execute(m.get(position).imageUrl);
-            }catch (Exception e){
-                Log.e("getBitmapFromURL",e.toString());
-            }
-            return convertView;
-        }
     }
     private void runAsyncTask(int data){
         new AsyncTask<Integer,Integer,MangaList>(){
@@ -108,12 +58,13 @@ public class MangaPage extends AppCompatActivity {
             protected void  onPostExecute(final MangaList mangaList){
                 super.onPostExecute(mangaList);
                 final Intent intent =new Intent(MangaPage.this, Manga_preview.class);
-                    MyAdapter cubeeAdapter = new MyAdapter(mangaList);
-                    GridView gridView = findViewById(R.id.gv_manga_page);
-                    gridView.setAdapter(cubeeAdapter);
-                    gridView.setNumColumns(3);
 
-                    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                MyAdapter cubeeAdapter = new MyAdapter(mangaList);
+                GridView gridView = findViewById(R.id.gv_manga_page);
+                gridView.setAdapter(cubeeAdapter);
+                gridView.setNumColumns(3);
+
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                         //Toast.makeText(MangaPage.this, "" + position, Toast.LENGTH_SHORT).show();
@@ -127,7 +78,74 @@ public class MangaPage extends AppCompatActivity {
 
         }.execute(data);
     }
-    private synchronized Bitmap getBitmapFromURL(String imageUrl)
+    private class MyAdapter extends BaseAdapter {
+        private MangaList m;
+        public MyAdapter(MangaList mangaList){
+            m=mangaList;
+        }
+        @Override
+        public  int getCount(){
+            return  this.m.size();
+        }
+        @Override
+        public Object getItem(int position){
+            return m.get(position);
+        }
+        @Override
+        public  long getItemId(int position){
+            return 0;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent){
+            ViewHolder holder;
+
+            if (convertView == null) {
+                convertView = getLayoutInflater().inflate(R.layout.manga_adapter, parent, false);
+                holder = new ViewHolder();
+                holder.textView =convertView.findViewById(R.id.name);
+                holder.textView_status=convertView.findViewById(R.id.status);
+                holder.thumbnail=convertView.findViewById(R.id.IW);
+                convertView.setTag(holder);
+            }else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.textView.setText(m.get(position).name);
+            holder.textView_status.setText(m.get(position).status);
+            holder.position = position;
+            new ThumbnailTask(position, holder,m.get(position).imageUrl)
+                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+            return convertView;
+        }
+    }
+    public static class ThumbnailTask extends AsyncTask<String, Void, Bitmap> {
+        private int mPosition;
+        private ViewHolder mHolder;
+        private String url;
+
+        public ThumbnailTask(int position, ViewHolder holder,String ur) {
+            mPosition = position;
+            mHolder = holder;
+            this.url=ur;
+        }
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            return getBitmapFromURL(url);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (mHolder.position == mPosition) {
+                mHolder.thumbnail.setImageBitmap(bitmap);
+            }
+        }
+    }
+    public static class ViewHolder {
+        public ImageView thumbnail;
+        public TextView textView;
+        public TextView textView_status;
+        public int position;
+    }
+    private static Bitmap getBitmapFromURL(String imageUrl)
     {
         try
         {

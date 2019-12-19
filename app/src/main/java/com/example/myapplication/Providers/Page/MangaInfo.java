@@ -8,7 +8,7 @@ public class MangaInfo {
     public String preview;
     public String status;
     public String imageUrl;
-    public Bitmap bitmap;
+    public Bitmap imageUrl_bitmap;
         public void MangaInfo(){
 
     }

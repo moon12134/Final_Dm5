@@ -38,7 +38,9 @@ public class Manga_preview extends AppCompatActivity {
         String path_MP = getIntent().getExtras().getString("path_MP");
         String imagaUrl_MP = getIntent().getExtras().getString("imagaUrl_MP");
         String name_MP = getIntent().getExtras().getString("name_MP");
-
+        Log.e("path_MP",path_MP);
+        Log.e("imagaUrl_MP",imagaUrl_MP);
+        Log.e("name_MP",name_MP);
         MangaInfo mangaInfo = new MangaInfo();
         mangaInfo.path = path_MP;
         mangaInfo.imageUrl= imagaUrl_MP;
@@ -46,7 +48,7 @@ public class Manga_preview extends AppCompatActivity {
         runAsyncTask(mangaInfo);
         TextView textView = findViewById(R.id.textView);
         textView.setText(name_MP);
-
+        TextView discribtion =findViewById(R.id.discibtion);
 
     }
     private void runAsyncTask(final MangaInfo mangaInfo){
@@ -72,8 +74,6 @@ public class Manga_preview extends AppCompatActivity {
                 super.onPostExecute(mangaSummary);
                 final Intent intent =new Intent(Manga_preview.this, Mange_chapter.class);
 
-                TextView discribtion =findViewById(R.id.discibtion);
-                discribtion.setText(mangaSummary.description);
                 MyAdapter cubeeAdapter = new MyAdapter(mangaSummary.chapters);
                 GridView gridView = findViewById(R.id.gv_manga_preview1);
                 gridView.setAdapter(cubeeAdapter);

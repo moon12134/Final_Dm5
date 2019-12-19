@@ -42,10 +42,12 @@ public class ProviderDm5 {
             MangaInfo manga;
             for (Element con : tmc){
                 manga = new MangaInfo();
+                /*
                 Log.e("chapter Name", con.select("div.mh-item-detali").select("a").first().attr("title"));
                 Log.e("chapter Path", con.select("div.mh-item-detali").select("a").first().attr("href"));
                 Log.e("chapter Status",con.getElementsByAttributeValue("class","chapter").get(0).text());
                 Log.e("chapter Image Path",con.getElementsByAttributeValue("class","mh-cover").attr("style").replaceAll("background-image: url","").replace("(","").replace(")",""));//text 代表顯示的文字 toString 代表顯示的html
+                 */
                 manga.name = con.select("div.mh-item-detali").select("a").first().attr("title");
                 manga.path = con.select("div.mh-item-detali").select("a").first().attr("href");
                 manga.status = con.getElementsByAttributeValue("class","chapter").get(0).text();
@@ -58,9 +60,9 @@ public class ProviderDm5 {
         MangaSummary summary = new MangaSummary(mangaInfo);
         ChaptersList chaptersList = new ChaptersList();
 
-        Connection.Response response = Jsoup.connect("https://cnc.dm5.com/" + mangaInfo.path).execute();
+        Document doc  = Jsoup.connect("https://cnc.dm5.com/" + mangaInfo.path).get();
         Log.e("aaaa", "https://cnc.dm5.com/" + mangaInfo.path);
-        Document doc = Jsoup.parse(response.body());
+        //Document doc = Jsoup.parse(response.body());
         Elements tmc = doc.select("div.banner_detail_form");
         for (Element con : tmc) {
             Log.e("description", con.getElementsByAttributeValue("class", "content").text());
@@ -68,6 +70,7 @@ public class ProviderDm5 {
         }
         Elements elements = doc.select("div.left-bar").select("ul.view-win-list.detail-list-select").select("ul li a");//select必去加在外面 內圈才會逐一選取
         MangaChapter mangaChapter;
+        Log.e("sss","ssss");
         for (Element co : elements) {
             mangaChapter = new MangaChapter();
             Log.e("chapterklist name", co.attr("href"));

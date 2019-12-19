@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             mangaInfo.name= genres[i];
             mangaList.add(mangaInfo);
         }
-
         MyAdapter cubeeAdapter = new MyAdapter(mangaList);
         GridView gridView = findViewById(R.id.gridView);
         gridView.setAdapter(cubeeAdapter);
@@ -92,12 +91,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                intent.putExtra("gerens",position);
+                intent.putExtra("Gerens",position);
                 startActivity(intent);
             }
         });
     }
-
     private class MyAdapter extends BaseAdapter{
         private MangaList m;
         public MyAdapter(MangaList mangaList){

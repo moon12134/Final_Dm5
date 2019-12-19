@@ -49,7 +49,7 @@ public class Mange_chapter extends AppCompatActivity {
         String url = getIntent().getExtras().getString("aaaaaa");
         url=url.replace("/","");
         Log.e("/mXXXXXX/", url);
-
+        //From https://stackoverflow.com/questions/2642777/trusting-all-certificates-using-httpclient-over-https/6378872#6378872
         try {
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
                 public boolean verify(String hostname, SSLSession session) {

@@ -6,11 +6,5 @@
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="match_parent"
-        android:layout_height="594dp"
-        android:layout_margin="5dp" />
-    <TextView
-        android:id="@+id/ImageLink"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 </LinearLayout>

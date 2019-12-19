@@ -13,16 +13,16 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:text="Manga_name" />
+        android:text="漫畫名稱" />
 
     <TextView
         android:id="@+id/discibtion"
         android:layout_width="match_parent"
         android:layout_height="138dp"
-        android:text="Mangadiscribtion" />
+        android:text="漫畫簡介" />
+
     <GridView
         android:id="@+id/gv_manga_preview1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </GridView>
+        android:layout_height="match_parent"></GridView>
 </LinearLayout>
