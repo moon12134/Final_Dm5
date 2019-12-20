@@ -3,15 +3,19 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,11 +35,15 @@ import java.net.URL;
 
 public class MangaPage extends AppCompatActivity {
 
+    private MangaList m;
+    private static int Page=1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_page);
-        int data = getIntent().getExtras().getInt("Gerens");
+        final int data = getIntent().getExtras().getInt("Gerens");
+        Log.e("ERRORTEST",String.valueOf(data));
         runAsyncTask(data);
     }
     private void runAsyncTask(int data){
@@ -44,7 +52,9 @@ public class MangaPage extends AppCompatActivity {
             protected MangaList doInBackground(Integer... data){
                 try {
                     ProviderDm5 Dm5= new ProviderDm5();
-                    MangaList page = Dm5.getList(1,data[0]);
+                    MangaList page = Dm5.getList(Page,data[0]);
+                    Page=Page+1;
+                    page.gernes=data[0]+1;
                     return page;
                 }catch (Exception e){
                     return null;
@@ -60,10 +70,36 @@ public class MangaPage extends AppCompatActivity {
                 final Intent intent =new Intent(MangaPage.this, Manga_preview.class);
 
                 MyAdapter cubeeAdapter = new MyAdapter(mangaList);
-                GridView gridView = findViewById(R.id.gv_manga_page);
+                final GridView gridView = findViewById(R.id.gv_manga_page);
                 gridView.setAdapter(cubeeAdapter);
                 gridView.setNumColumns(3);
 
+                Button button = findViewById(R.id.btn_LoadPage);
+                button.setOnClickListener(new Button.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ProviderDm5 Dm5 = new ProviderDm5();
+                                    m.appendPage(Dm5.getList(Page, mangaList.gernes));
+                                    Page = Page + 1;
+                                } catch (Exception e) {
+                                    Log.e("EXCEPTION", e.toString());
+                                }
+                            }
+                        }).start();
+                    }
+                });
+                gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    }
+                    @Override
+                    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    }
+                });
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -81,14 +117,14 @@ public class MangaPage extends AppCompatActivity {
 
         }.execute(data);
     }
+
     private class MyAdapter extends BaseAdapter {
-        private MangaList m;
         public MyAdapter(MangaList mangaList){
             m=mangaList;
         }
         @Override
         public  int getCount(){
-            return  this.m.size();
+            return  m.size();
         }
         @Override
         public Object getItem(int position){
@@ -116,6 +152,7 @@ public class MangaPage extends AppCompatActivity {
             holder.textView_status.setText(m.get(position).status);
             holder.position = position;
             if (m.get(position).imageUrl_bitmap==null){
+                holder.thumbnail.setImageResource(R.drawable.comic);
                 new ThumbnailTask(position, holder,m.get(position).imageUrl)
                         .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
             }else {

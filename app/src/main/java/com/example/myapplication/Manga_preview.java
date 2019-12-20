@@ -30,7 +30,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Manga_preview extends AppCompatActivity {
-
+    private runAsyncTask runAsyncTask;
+    private GetBitmap getBitmap;
+    public void onBackPressed(){
+        super.onBackPressed();
+        runAsyncTask.cancel(true);
+        getBitmap.cancel(true);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,48 +53,47 @@ public class Manga_preview extends AppCompatActivity {
         mangaInfo.name =name_MP;
         TextView textView = findViewById(R.id.textView);
         textView.setText(name_MP);
-        GetBitmap(mangaInfo.imageUrl);
-        runAsyncTask(mangaInfo);
+        getBitmap=new GetBitmap();
+        getBitmap.execute(mangaInfo.imageUrl);
+        runAsyncTask=new runAsyncTask();
+        runAsyncTask.execute(mangaInfo);
 
     }
-
-    private void runAsyncTask(final MangaInfo mangaInfo){
-        new AsyncTask<MangaInfo,Integer, MangaSummary>(){
-            @Override
-            protected MangaSummary doInBackground(MangaInfo... data){
-                try {
-                    ProviderDm5 Dm5= new ProviderDm5();
-                    MangaSummary mangaSummary = Dm5.getDetailInfo(data[0]);
-                    return mangaSummary;
-                }catch (Exception e){
-                    return null;
+    class runAsyncTask extends AsyncTask<MangaInfo,Integer, MangaSummary> {
+        @Override
+        protected MangaSummary doInBackground(MangaInfo... data) {
+            if(this.isCancelled()) return null;
+            try {
+                ProviderDm5 Dm5 = new ProviderDm5();
+                MangaSummary mangaSummary = Dm5.getDetailInfo(data[0]);
+                return mangaSummary;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate();
+            if(this.isCancelled()) return ;
+        }
+        @Override
+        protected void onPostExecute(final MangaSummary mangaSummary) {
+            super.onPostExecute(mangaSummary);
+            final Intent intent = new Intent(Manga_preview.this, Mange_chapter.class);
+            final TextView discribtion = findViewById(R.id.discibtion);
+            if(this.isCancelled()) return ;
+            discribtion.setText(mangaSummary.description);
+            MyAdapter cubeeAdapter = new MyAdapter(mangaSummary.chapters);
+            GridView gridView = findViewById(R.id.gv_manga_preview1);
+            gridView.setAdapter(cubeeAdapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    intent.putExtra("Chapter_ReadLink", mangaSummary.chapters.get(position).readLink);
+                    startActivity(intent);
                 }
-            }
-            @Override
-            protected void onProgressUpdate(Integer... values){
-                super.onProgressUpdate();
-            }
-            @Override
-            protected void  onPostExecute(final MangaSummary mangaSummary){
-                super.onPostExecute(mangaSummary);
-                final Intent intent =new Intent(Manga_preview.this, Mange_chapter.class);
-                final TextView discribtion =findViewById(R.id.discibtion);
-
-                discribtion.setText(mangaSummary.description);
-                MyAdapter cubeeAdapter = new MyAdapter(mangaSummary.chapters);
-                GridView gridView = findViewById(R.id.gv_manga_preview1);
-                gridView.setAdapter(cubeeAdapter);
-
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                        intent.putExtra("Chapter_ReadLink",mangaSummary.chapters.get(position).readLink);
-                        startActivity(intent);
-                    }
-                });
-            }
-
-        }.execute(mangaInfo);
+            });
+        }
     }
     private class MyAdapter extends BaseAdapter {
         private ChaptersList m;
@@ -115,45 +120,33 @@ public class Manga_preview extends AppCompatActivity {
             return convertView;
         }
     }
-
-    private void GetBitmap(String url){                             //Get image Bitmap amd push into imageView
-        new AsyncTask<String,Integer, Bitmap>(){
-            @Override
-            protected Bitmap doInBackground(String... url){
-                try {
-                    return getBitmapFromURL(url[0]);
-                }catch (Exception e){
-                    return null;
-                }
+    class GetBitmap extends AsyncTask<String,Integer, Bitmap>{
+        @Override
+        protected Bitmap doInBackground(String... url){
+            if(this.isCancelled()) return null;
+            try {
+                URL a = new URL(url[0]);
+                HttpURLConnection connection = (HttpURLConnection) a.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap bitmap = BitmapFactory.decodeStream(input);
+                return bitmap;
+            }catch (Exception e){
+                return null;
             }
-            @Override
-            protected void onProgressUpdate(Integer... values){
-                super.onProgressUpdate();
-            }
-            @Override
-            protected void  onPostExecute(Bitmap Bitmap){
-                super.onPostExecute(Bitmap);
-                final ImageView imageView =findViewById(R.id.imageV);
-                imageView.setImageBitmap (Bitmap);
-            }
-        }.execute(url);
-    }
-    private static Bitmap getBitmapFromURL(String imageUrl)
-    {
-        try
-        {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(input);
-            return bitmap;
         }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
+        @Override
+        protected void onProgressUpdate(Integer... values){
+            super.onProgressUpdate();
+            if(this.isCancelled()) return;
+        }
+        @Override
+        protected void  onPostExecute(Bitmap Bitmap){
+            super.onPostExecute(Bitmap);
+            if(this.isCancelled()) return;
+            final ImageView imageView =findViewById(R.id.imageV);
+            imageView.setImageBitmap (Bitmap);
         }
     }
 }

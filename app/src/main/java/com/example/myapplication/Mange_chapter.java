@@ -44,6 +44,16 @@ public class Mange_chapter extends AppCompatActivity {
     public static int num;
     public static String vvv;
     public int chapterPage;
+    private runAsyncTask runAsyncTask;
+    private Adap a;
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        aVoid.interrupted();
+        a.cancel(true);
+        runAsyncTask.cancel(true);
+        Log.e("aaa","aaa");
+        }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,31 +98,34 @@ public class Mange_chapter extends AppCompatActivity {
                 bitmaps.add(null);
             }
         }catch (Exception e){
-
         }
+        a=new Adap();
+        a.execute(bitmaps);
+        runAsyncTask =new runAsyncTask();
+        runAsyncTask.execute(url);
+    }
+    class Adap extends AsyncTask<ArrayList<Bitmap>, Integer, ArrayList<Bitmap>>{
+                @Override
+                protected ArrayList doInBackground(ArrayList<Bitmap>... url) {
+                    if(this.isCancelled()) return null;
+                    return url[0];
+                }
+                @Override
+                protected void onProgressUpdate(Integer... values) {
+                    super.onProgressUpdate();
+                    if(this.isCancelled()) return;
+                }
+                @Override
+                protected void onPostExecute(ArrayList<Bitmap> Bitmap) {
+                    super.onPostExecute(Bitmap);
+                    MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
+                    GridView gridView = findViewById(R.id.gv_manga_chapter);
+                    gridView.setAdapter(cubeeAdapter);
+                    if(this.isCancelled()) return;
+                }
+    }
 
-        Adapter(bitmaps);
-        runAsyncTask(url);
-    }
-    private void Adapter(ArrayList<Bitmap> bitmaps){                             //Get image Bitmap amd push into imageView
-        new AsyncTask<ArrayList<Bitmap>,Integer, ArrayList<Bitmap>>(){
-            @Override
-            protected ArrayList doInBackground(ArrayList<Bitmap>... url){
-                return url[0];
-            }
-            @Override
-            protected void onProgressUpdate(Integer... values){
-                super.onProgressUpdate();
-            }
-            @Override
-            protected void  onPostExecute(ArrayList<Bitmap> Bitmap){
-                super.onPostExecute(Bitmap);
-                MyAdapter cubeeAdapter = new MyAdapter(Bitmap);
-                GridView gridView = findViewById(R.id.gv_manga_chapter);
-                gridView.setAdapter(cubeeAdapter);
-            }
-        }.execute(bitmaps);
-    }
+
     class aVoid extends Thread{
         @Override
         public void run() {
@@ -122,19 +135,20 @@ public class Mange_chapter extends AppCompatActivity {
             } catch (Exception e) {
             }
         }
-    };
-    private void runAsyncTask(String url){
-        new AsyncTask<String,Integer, ArrayList<Bitmap>>(){
+    }
+    class runAsyncTask extends AsyncTask<String,Integer, ArrayList<Bitmap>>{
             @Override
             protected ArrayList<Bitmap> doInBackground(String... data){
+                if(this.isCancelled()) return null;
                 ProviderDm5 dm5=new ProviderDm5();
                 //抓到bitmap 存成 arraylist
                 ArrayList<Bitmap> bitmaps = new ArrayList<>();
                 chapterLink chapterLink =new chapterLink();
                 try{
-                    for(int i =1;i<dm5.getChapterPage(data[0])+1;i++){
+                    for(int i =0;i<dm5.getChapterPage(data[0]);i++){
+                        if(this.isCancelled()) return null;
                         //chapterLink.add(dm5.getChapterImageUrl(data[0],String.valueOf(i)));
-                        chapterLink = dm5.getChapterImageUrl(data[0],String.valueOf(i));
+                        chapterLink = dm5.getChapterImageUrl(data[0],String.valueOf(i+1));
                         //chapterLink.Referer = dm5.getChapterImageUrl(data[0],String.valueOf(i)).Referer;
                         //chapterLink.imUrl = dm5.getChapterImageUrl(data[0],String.valueOf(i)).imUrl;
 
@@ -151,7 +165,9 @@ public class Mange_chapter extends AppCompatActivity {
                         Bitmap bitmap = BitmapFactory.decodeStream(input);
                         bitmaps.add(bitmap);
                         m.set(i,bitmap);
+
                     }
+
                     return bitmaps;
                 }catch (Exception e){
                     return null;
@@ -160,13 +176,14 @@ public class Mange_chapter extends AppCompatActivity {
             @Override
             protected void onProgressUpdate(Integer... values){
                 super.onProgressUpdate();
+                if(this.isCancelled()) return;
             }
             @Override
             protected void  onPostExecute(final ArrayList<Bitmap> Bitmap){
                 super.onPostExecute(Bitmap);
+                if(this.isCancelled()) return;
                 //將ArrayList<bitmap>放入
             }
-        }.execute(url);
     }
     public ArrayList<Bitmap> m;
     private class MyAdapter extends BaseAdapter {
