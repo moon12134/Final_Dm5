@@ -36,7 +36,7 @@ public class ProviderDm5 {
 
     public MangaList getList(int page, int genere)throws Exception{
             MangaList mangalist = new MangaList();
-            Connection.Response response = Jsoup.connect("https://cnc.dm5.com/manhua-" + genresUrl[genere - 1] + "-p"+page + "/").execute();
+            Connection.Response response = Jsoup.connect("https://cnc.dm5.com/manhua-" + genresUrl[genere ] + "-p"+page + "/").execute();
             Document doc = Jsoup.parse(response.body());
             Elements tmc = doc.select("div.mh-item");
             MangaInfo manga;

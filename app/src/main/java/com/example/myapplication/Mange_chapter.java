@@ -41,7 +41,8 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
 
 public class Mange_chapter extends AppCompatActivity {
-
+    public static int num;
+    public static String vvv;
     public int chapterPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class Mange_chapter extends AppCompatActivity {
 
         setContentView(R.layout.activity_mange_chapter);
         final String url = getIntent().getExtras().getString("Chapter_ReadLink").replace("/", "");
+        vvv=url;
         //Log.e("/mXXXXXX/", url);
         try {
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -76,11 +78,19 @@ public class Mange_chapter extends AppCompatActivity {
             e.printStackTrace();
         }
         //以上解決FTTPS協定問題
-        final ProviderDm5 dm5 = new ProviderDm5();
+        final aVoid aa = new aVoid();
+        aa.start();
         final ArrayList<Bitmap> bitmaps = new ArrayList<>(chapterPage);
-        for (int i = 0; i < 50; i++) {
-            bitmaps.add(null);
+        try {
+            aa.join();
+            Log.e("PAGE",String.valueOf(num));
+            for (int i = 0; i < num; i++) {
+                bitmaps.add(null);
+            }
+        }catch (Exception e){
+
         }
+
         Adapter(bitmaps);
         runAsyncTask(url);
     }
@@ -103,6 +113,16 @@ public class Mange_chapter extends AppCompatActivity {
             }
         }.execute(bitmaps);
     }
+    class aVoid extends Thread{
+        @Override
+        public void run() {
+            try {
+                final ProviderDm5 dm5 = new ProviderDm5();
+                num = dm5.getChapterPage(vvv);
+            } catch (Exception e) {
+            }
+        }
+    };
     private void runAsyncTask(String url){
         new AsyncTask<String,Integer, ArrayList<Bitmap>>(){
             @Override
@@ -112,7 +132,7 @@ public class Mange_chapter extends AppCompatActivity {
                 ArrayList<Bitmap> bitmaps = new ArrayList<>();
                 chapterLink chapterLink =new chapterLink();
                 try{
-                    for(int i =0;i<dm5.getChapterPage(data[0]);i++){
+                    for(int i =1;i<dm5.getChapterPage(data[0])+1;i++){
                         //chapterLink.add(dm5.getChapterImageUrl(data[0],String.valueOf(i)));
                         chapterLink = dm5.getChapterImageUrl(data[0],String.valueOf(i));
                         //chapterLink.Referer = dm5.getChapterImageUrl(data[0],String.valueOf(i)).Referer;
@@ -168,6 +188,7 @@ public class Mange_chapter extends AppCompatActivity {
         }
         @Override
         public View getView(int position, View convertView, ViewGroup parent){
+
             convertView = getLayoutInflater().inflate(R.layout.manga_chapter_item,parent,false);
             final ImageView imageView =convertView.findViewById(R.id.imageView2);
             if(m.get(position)!=null){
