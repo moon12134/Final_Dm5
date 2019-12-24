@@ -49,15 +49,14 @@ public class Mange_chapter extends AppCompatActivity {
     public static int num;
     public static String vvv;
     public int chapterPage;
-    private RunAsyncTast A;
-    //  private runAsyncTask runAsyncTask;
-    //  private Adap a;
+    private runAsyncTask runAsyncTask;
+
 
     @Override
     public void onBackPressed(){
         super.onBackPressed();
+        runAsyncTask.cancel(true);
         aVoid.interrupted();
-        A.cancel(true);
 
         //  a.cancel(true);
         //    runAsyncTask.cancel(true);
@@ -69,7 +68,7 @@ public class Mange_chapter extends AppCompatActivity {
 
         setContentView(R.layout.activity_mange_chapter);
         final String url = getIntent().getExtras().getString("Chapter_ReadLink").replace("/", "");
-        vvv=url;
+        vvv = url;
         //Log.e("/mXXXXXX/", url);
         try {
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
@@ -98,25 +97,26 @@ public class Mange_chapter extends AppCompatActivity {
         }
         //以上解決FTTPS協定問題
 
+
         final aVoid aa = new aVoid();
         aa.start();
         final ArrayList<Bitmap> bitmaps = new ArrayList<>(num);
 
         try {
             aa.join();
-            Log.e("PAGE",String.valueOf(num));
-        }catch (Exception e)
-        {
+            Log.e("PAGE", String.valueOf(num));
+        } catch (Exception e) {
         }
 
-        RunAsyncTast A = new RunAsyncTast();
-        A.execute(url);
+
+        runAsyncTask = new runAsyncTask();
+        runAsyncTask.execute(url);
 
 
     }
 
 
-    class RunAsyncTast extends AsyncTask<String, ArrayList<Bitmap> ,Boolean>
+    class runAsyncTask extends AsyncTask<String, ArrayList<Bitmap> ,Boolean>
     {
 
 
@@ -127,16 +127,17 @@ public class Mange_chapter extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 if(this.isCancelled()) return;
-            for (int i=0;i<num;i++) {
-                TEST.add(null);
-            }
-            gridView.setAdapter(CC);
+
+                for (int i=0;i<num;i++) {
+                    TEST.add(null);
+                }
+                gridView.setAdapter(CC);
+
         }
             @Override
             protected Boolean doInBackground(String... data) {
                 if(this.isCancelled()) return null;
             ProviderDm5 dm5 = new ProviderDm5();
-            //抓到bitmap 存成 arraylist
             chapterLink chapterLink = new chapterLink();
             ArrayList<Bitmap> bitmapD= new ArrayList<>();
 
@@ -158,12 +159,6 @@ public class Mange_chapter extends AppCompatActivity {
                     publishProgress(bitmapD);
                 }
 
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -179,11 +174,13 @@ public class Mange_chapter extends AppCompatActivity {
             System.out.println("正在載路");
 
             CC.notifyDataSetChanged();
+
+
         }
 
             protected void  onPostExecute(Boolean boo){
-                if(this.isCancelled()) return;
             super.onPostExecute(true);
+                if(this.isCancelled()) return;
             //將ArrayList<bitmap>放入
 
              }
@@ -232,6 +229,4 @@ public class Mange_chapter extends AppCompatActivity {
             return convertView;
         }
     }
-
-
 }
