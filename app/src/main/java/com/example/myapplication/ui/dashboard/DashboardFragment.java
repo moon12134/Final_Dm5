@@ -30,8 +30,8 @@ public class DashboardFragment extends Fragment {
         final Intent intent =new Intent(getActivity(), MangaPage.class);
 
         MangaList mangaList= new MangaList();
-        String genres[] = {"全部","热血","恋爱","校园","百合","彩虹","冒险","后宫","科幻",
-                "战争","悬疑","推理","搞笑","奇幻","魔法","恐怖","神鬼","历史","同人","运动","绅士","机甲"};
+        String genres[] = {"更新","全部","热血","恋爱","校园","百合","彩虹","冒险","后宫","科幻",
+                "战争","悬疑","推理","搞笑","奇幻","魔法","恐怖","神鬼","历史","同人","运动","绅士","机甲","限制级"};
 
         for(int i=0;i<genres.length;i++){
             MangaInfo mangaInfo;

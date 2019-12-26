@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,20 @@ public class Manga_preview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_preview);
+        TabHost tabHost = (TabHost)findViewById(R.id.TabHost);
+        tabHost.setup();
+
+        TabHost.TabSpec spec=tabHost.newTabSpec("tab1");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("簡介");
+        tabHost.addTab(spec);
+
+        spec=tabHost.newTabSpec("tab2");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator("章節");
+        tabHost.addTab(spec);
+        tabHost.setCurrentTab(0);
+
         String path_MP = getIntent().getExtras().getString("path_MP");
         String imagaUrl_MP = getIntent().getExtras().getString("imagaUrl_MP");
         String name_MP = getIntent().getExtras().getString("name_MP");
