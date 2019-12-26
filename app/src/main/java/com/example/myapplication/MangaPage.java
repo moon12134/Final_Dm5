@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.MainActivity;
 import com.example.myapplication.Providers.Page.MangaInfo;
 import com.example.myapplication.Providers.Page.MangaList;
 import com.example.myapplication.Providers.ProviderDm5;
@@ -112,8 +111,10 @@ public class MangaPage extends AppCompatActivity {
             holder.textView.setText(m.get(position).name);
             holder.textView_status.setText(m.get(position).status);
             holder.position = position;
+            String I = new String();
+            I= null;
             new ThumbnailTask(position, holder,m.get(position).imageUrl)
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, null);
+                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, I);
             return convertView;
         }
     }

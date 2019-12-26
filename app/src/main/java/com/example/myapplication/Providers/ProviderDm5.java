@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 
 public class ProviderDm5 {
     public static int genres[] = {
-            R.string.genre_new, R.string.genre_list, R.string.genre_rexue, R.string.genre_aiqing, R.string.genre_xiaoyuan, R.string.genre_baihe, R.string.genre_danmei, R.string.genre_maoxian, R.string.genre_hougong,
+            R.string.genre_list, R.string.genre_rexue, R.string.genre_aiqing, R.string.genre_xiaoyuan, R.string.genre_baihe, R.string.genre_danmei, R.string.genre_maoxian, R.string.genre_hougong,
             R.string.genre_kehuan, R.string.genre_zhanzheng, R.string.genre_xuanyi, R.string.genre_zhentan, R.string.genre_gaoxiao, R.string.genre_qihuan, R.string.genre_mofa, R.string.genre_kongbu, R.string.genre_dongfangshengui,
             R.string.genre_lishi, R.string.genre_tongren, R.string.genre_jingji, R.string.genre_jiecao, R.string.genre_jizhan, R.string.genre_18_x};
     public static String genresUrl[] = {
