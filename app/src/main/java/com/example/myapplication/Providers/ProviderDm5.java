@@ -34,32 +34,46 @@ public class ProviderDm5 {
     public ProviderDm5() {
     }
 
-    public MangaList getList(int page, int genere)throws Exception{
-            MangaList mangalist = new MangaList();
-            Connection.Response response = Jsoup.connect("https://cnc.dm5.com/manhua-" + genresUrl[genere ] + "-p"+page + "/").execute();
-            Document doc = Jsoup.parse(response.body());
-            Elements tmc = doc.select("div.mh-item");
-            MangaInfo manga;
-            for (Element con : tmc){
-                manga = new MangaInfo();
-                /*
-                Log.e("chapter Name", con.select("div.mh-item-detali").select("a").first().attr("title"));
-                Log.e("chapter Path", con.select("div.mh-item-detali").select("a").first().attr("href"));
-                Log.e("chapter Status",con.getElementsByAttributeValue("class","chapter").get(0).text());
-                Log.e("chapter Image Path",con.getElementsByAttributeValue("class","mh-cover").attr("style").replaceAll("background-image: url","").replace("(","").replace(")",""));//text 代表顯示的文字 toString 代表顯示的html
-                 */
-                manga.name = con.select("div.mh-item-detali").select("a").first().attr("title");
-                manga.path = con.select("div.mh-item-detali").select("a").first().attr("href");
-                manga.status = con.getElementsByAttributeValue("class","chapter").get(0).text();
-                manga.imageUrl =con.getElementsByAttributeValue("class","mh-cover").attr("style").replaceAll("background-image: url","").replace("(","").replace(")","");
-                mangalist.add(manga);
+    public MangaList getList(int page, int genere,String searchText)throws Exception {
+        MangaList mangalist = new MangaList();
+        String url = null;
+        if (searchText != null) {
+            url = "https://www.dm5.com/search?title=" + searchText + "&language=1";//Search
+        } else {
+            url = "https://cnc.dm5.com/manhua-" + genresUrl[genere] + "-p" + page + "/";
+        }
+        Document doc = Jsoup.connect(url).get();
+        Elements tmc = doc.select("div.mh-item");
+        Element element = null;
+        MangaInfo manga;
+
+        if (searchText != null) {
+            element = doc.select("div.box-body").first();
+            Log.e("div.box-body",element.text());
+            manga = new MangaInfo();
+            manga.name = element.select("div.banner_detail_form").select("a").first().attr("title");
+            manga.path = element.select("div.banner_detail_form").select("a").first().attr("href");
+            manga.status = element.select("div.info").select("p").toString().split("class=\"block\"")[1].split("</span")[0].split("<span>")[1];
+            Log.e("manga.status",manga.status);
+            manga.imageUrl = element.getElementsByAttributeValue("class", "cover").toString().split("\"")[3];
+            if(manga.name==""){
+                return null;
             }
+            mangalist.add(manga);
+        }
+        for (Element con : tmc){
+            manga = new MangaInfo();
+            manga.name = con.select("div.mh-item-detali").select("a").first().attr("title");
+            manga.path = con.select("div.mh-item-detali").select("a").first().attr("href");
+            manga.status = con.getElementsByAttributeValue("class","chapter").get(0).text();
+            manga.imageUrl =con.getElementsByAttributeValue("class","mh-cover").attr("style").replaceAll("background-image: url","").replace("(","").replace(")","");
+            mangalist.add(manga);
+        }
         return mangalist;
     }
     public MangaSummary getDetailInfo(MangaInfo mangaInfo)throws Exception {
         MangaSummary summary = new MangaSummary(mangaInfo);
         ChaptersList chaptersList = new ChaptersList();
-
         Document doc  = Jsoup.connect("https://cnc.dm5.com/" + mangaInfo.path).get();
         Log.e("aaaa", "https://cnc.dm5.com/" + mangaInfo.path);
         //Document doc = Jsoup.parse(response.body());
@@ -70,11 +84,8 @@ public class ProviderDm5 {
         }
         Elements elements = doc.select("div.left-bar").select("ul.view-win-list.detail-list-select").select("ul li a");//select必去加在外面 內圈才會逐一選取
         MangaChapter mangaChapter;
-        Log.e("sss","ssss");
         for (Element co : elements) {
             mangaChapter = new MangaChapter();
-            Log.e("chapterklist name", co.attr("href"));
-            Log.e("chapterklist name", co.text());
             mangaChapter.name = co.text();
             mangaChapter.readLink = co.attr("href");
             chaptersList.add(mangaChapter);
