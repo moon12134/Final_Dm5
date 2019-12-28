@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.myapplication.Providers.Chapter.ChaptersList;
 import com.example.myapplication.Providers.Chapter.MangaChapter;
@@ -24,27 +26,40 @@ import com.example.myapplication.Providers.MangaSummary;
 import com.example.myapplication.Providers.Page.MangaInfo;
 import com.example.myapplication.Providers.Page.MangaList;
 import com.example.myapplication.Providers.ProviderDm5;
+import  com.example.myapplication.BookCase;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class Manga_preview extends AppCompatActivity {
     private runAsyncTask runAsyncTask;
     private GetBitmap getBitmap;
+    BookCase BookCase= new BookCase();
+    ToggleButton ToggleButton = null;
+
     public void onBackPressed(){
         super.onBackPressed();
         runAsyncTask.cancel(true);
         getBitmap.cancel(true);
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_preview);
+
+        ToggleButton = findViewById(R.id.toggleButton);
         TabHost tabHost = (TabHost)findViewById(R.id.TabHost);
         tabHost.setup();
-
         TabHost.TabSpec spec=tabHost.newTabSpec("tab1");
         spec.setContent(R.id.tab1);
         spec.setIndicator("簡介");
@@ -56,9 +71,16 @@ public class Manga_preview extends AppCompatActivity {
         tabHost.addTab(spec);
         tabHost.setCurrentTab(0);
 
+        System.out.println("get information");
         String path_MP = getIntent().getExtras().getString("path_MP");
         String imagaUrl_MP = getIntent().getExtras().getString("imagaUrl_MP");
         String name_MP = getIntent().getExtras().getString("name_MP");
+
+        try {
+            ToggleButton.setChecked(BookCase.isInBookList(path_MP));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Log.e("path_MP",path_MP);
         Log.e("imagaUrl_MP",imagaUrl_MP);
@@ -70,11 +92,58 @@ public class Manga_preview extends AppCompatActivity {
 
         getBitmap=new GetBitmap();
         getBitmap.execute(mangaInfo.imageUrl);
+
+        toggleButton_OnCheckedChangeListener CCTV = new toggleButton_OnCheckedChangeListener(path_MP);
+
+
+        ToggleButton.setOnCheckedChangeListener(CCTV);
+
         runAsyncTask=new runAsyncTask();
         runAsyncTask.execute(mangaInfo);
 
     }
+
+
+    private class toggleButton_OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener
+    {
+        String Path_MP = null;
+        public toggleButton_OnCheckedChangeListener(String URLPATH)
+        {
+            Path_MP = URLPATH;
+
+        }
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+        {
+            if(isChecked) //當按鈕狀態為選取時
+            {
+                try {
+                        BookCase.writeFileURL(Path_MP);
+                }catch (IOException e )
+                {
+                    Log.e("幹，出事",e.getMessage());
+                }
+
+            }
+            else //當按鈕狀態為未選取時
+            {
+                try {
+                    BookCase.RemoveFileURL(Path_MP);
+                }catch (IOException e )
+                {
+                    Log.e("幹，出事",e.getMessage());
+                }
+            }
+        }
+    }
+
+
+    //***********************************************************************************
     class runAsyncTask extends AsyncTask<MangaInfo,Integer, MangaSummary> {
+        @Override
+        protected void onPreExecute()
+        {
+    }
         @Override
         protected MangaSummary doInBackground(MangaInfo... data) {
             if(this.isCancelled()) return null;
@@ -99,13 +168,14 @@ public class Manga_preview extends AppCompatActivity {
             if(this.isCancelled()) return ;
             TextView textView = findViewById(R.id.textView);
             textView.setText(mangaSummary.name);
-            mangaSummary.description.replace("[+展开]","");
-            mangaSummary.description.replace("[-折叠]","");
+            mangaSummary.description=mangaSummary.description.replace("[+展开]"," ");
+            mangaSummary.description=mangaSummary.description.replace("[-折叠]"," ");
             discribtion.setText(mangaSummary.description);
             MyAdapter cubeeAdapter = new MyAdapter(mangaSummary.chapters);
             GridView gridView = findViewById(R.id.gv_manga_preview1);
             gridView.setNumColumns(3);
             gridView.setAdapter(cubeeAdapter);
+
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -115,6 +185,10 @@ public class Manga_preview extends AppCompatActivity {
             });
         }
     }
+    //**************************************************************************************
+
+
+
     private class MyAdapter extends BaseAdapter {
         private ChaptersList m;
         public MyAdapter(ChaptersList chapters){
