@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -42,20 +43,29 @@ public class MangaPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_page);
-        final int data = getIntent().getExtras().getInt("Gerens");
-        Log.e("ERRORTEST",String.valueOf(data));
-
-        runAsyncTask(data);
+        final boundle boundle=new boundle();
+        int gerens =getIntent().getExtras().getInt("Gerens");
+        String c =getIntent().getExtras().getString("Search_Text");
+        Page=1;
+        if(gerens==-1) {
+            boundle.Search=c;
+            runAsyncTask(boundle);
+        }else {
+            boundle.Search=null;
+            boundle.gerens = gerens;
+            runAsyncTask(boundle);
+        }
     }
-    private void runAsyncTask(int data){
-        new AsyncTask<Integer,Integer,MangaList>(){
+    private void runAsyncTask(boundle boundle){
+        new AsyncTask<boundle,Integer,MangaList>(){
             @Override
-            protected MangaList doInBackground(Integer... data){
+            protected MangaList doInBackground(boundle... data){
                 try {
                     ProviderDm5 Dm5= new ProviderDm5();
-                    MangaList page = Dm5.getList(Page,data[0]);
+                    MangaList page = Dm5.getList(Page,data[0].gerens,data[0].Search);
                     Page=Page+1;
-                    page.gernes=data[0];
+                    page.gernes=data[0].gerens;
+                    page.search=data[0].Search;
                     return page;
                 }catch (Exception e){
                     return null;
@@ -69,11 +79,35 @@ public class MangaPage extends AppCompatActivity {
             protected void  onPostExecute(final MangaList mangaList){
                 super.onPostExecute(mangaList);
                 final Intent intent =new Intent(MangaPage.this, Manga_preview.class);
-
+                if (mangaList==null){
+                    Toast.makeText(MangaPage.this, "無查詢結果", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 MyAdapter cubeeAdapter = new MyAdapter(mangaList);
                 final GridView gridView = findViewById(R.id.gv_manga_page);
                 gridView.setNumColumns(3);
                 gridView.setAdapter(cubeeAdapter);
+
+
+                Button button = findViewById(R.id.btn_LoadPage);
+                button.setOnClickListener(new Button.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ProviderDm5 Dm5 = new ProviderDm5();
+                                    m.appendPage(Dm5.getList(Page, mangaList.gernes,mangaList.search));
+                                    Page = Page + 1;
+                                } catch (Exception e) {
+                                    Log.e("EXCEPTION", e.toString());
+                                }
+                            }
+                        }).start();
+                    }
+                });
+
                 gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -85,7 +119,6 @@ public class MangaPage extends AppCompatActivity {
                 gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                        //Toast.makeText(MangaPage.this, "" + position, Toast.LENGTH_SHORT).show();
                         intent.putExtra("path_MP",mangaList.get(position).path);
                         intent.putExtra("imagaUrl_MP",mangaList.get(position).imageUrl);
                         intent.putExtra("name_MP",mangaList.get(position).name);
@@ -97,9 +130,12 @@ public class MangaPage extends AppCompatActivity {
 
             }
 
-        }.execute(data);
+        }.execute(boundle);
     }
-
+    class boundle{
+        String Search;
+        int gerens;
+    }
     private class MyAdapter extends BaseAdapter {
         public MyAdapter(MangaList mangaList){
             m=mangaList;
