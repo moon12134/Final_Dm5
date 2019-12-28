@@ -44,6 +44,7 @@ public class MangaPage extends AppCompatActivity {
         setContentView(R.layout.activity_manga_page);
         final int data = getIntent().getExtras().getInt("Gerens");
         Log.e("ERRORTEST",String.valueOf(data));
+
         runAsyncTask(data);
     }
     private void runAsyncTask(int data){
@@ -54,7 +55,7 @@ public class MangaPage extends AppCompatActivity {
                     ProviderDm5 Dm5= new ProviderDm5();
                     MangaList page = Dm5.getList(Page,data[0]);
                     Page=Page+1;
-                    page.gernes=data[0]+1;
+                    page.gernes=data[0];
                     return page;
                 }catch (Exception e){
                     return null;
@@ -71,28 +72,8 @@ public class MangaPage extends AppCompatActivity {
 
                 MyAdapter cubeeAdapter = new MyAdapter(mangaList);
                 final GridView gridView = findViewById(R.id.gv_manga_page);
-                gridView.setAdapter(cubeeAdapter);
                 gridView.setNumColumns(3);
-
-                Button button = findViewById(R.id.btn_LoadPage);
-                button.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    ProviderDm5 Dm5 = new ProviderDm5();
-                                    m.appendPage(Dm5.getList(Page, mangaList.gernes));
-                                    Page = Page + 1;
-                                } catch (Exception e) {
-                                    Log.e("EXCEPTION", e.toString());
-                                }
-                            }
-                        }).start();
-                    }
-                });
-
+                gridView.setAdapter(cubeeAdapter);
                 gridView.setOnScrollListener(new AbsListView.OnScrollListener() {
                     @Override
                     public void onScrollStateChanged(AbsListView view, int scrollState) {

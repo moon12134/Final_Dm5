@@ -59,6 +59,7 @@ public class Manga_preview extends AppCompatActivity {
         String path_MP = getIntent().getExtras().getString("path_MP");
         String imagaUrl_MP = getIntent().getExtras().getString("imagaUrl_MP");
         String name_MP = getIntent().getExtras().getString("name_MP");
+
         Log.e("path_MP",path_MP);
         Log.e("imagaUrl_MP",imagaUrl_MP);
         Log.e("name_MP",name_MP);
@@ -66,8 +67,7 @@ public class Manga_preview extends AppCompatActivity {
         mangaInfo.path = path_MP;
         mangaInfo.imageUrl= imagaUrl_MP;
         mangaInfo.name =name_MP;
-        TextView textView = findViewById(R.id.textView);
-        textView.setText(name_MP);
+
         getBitmap=new GetBitmap();
         getBitmap.execute(mangaInfo.imageUrl);
         runAsyncTask=new runAsyncTask();
@@ -97,9 +97,14 @@ public class Manga_preview extends AppCompatActivity {
             final Intent intent = new Intent(Manga_preview.this, Mange_chapter.class);
             final TextView discribtion = findViewById(R.id.discibtion);
             if(this.isCancelled()) return ;
+            TextView textView = findViewById(R.id.textView);
+            textView.setText(mangaSummary.name);
+            mangaSummary.description.replace("[+展开]","");
+            mangaSummary.description.replace("[-折叠]","");
             discribtion.setText(mangaSummary.description);
             MyAdapter cubeeAdapter = new MyAdapter(mangaSummary.chapters);
             GridView gridView = findViewById(R.id.gv_manga_preview1);
+            gridView.setNumColumns(3);
             gridView.setAdapter(cubeeAdapter);
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -131,10 +136,13 @@ public class Manga_preview extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent){
             convertView = getLayoutInflater().inflate(R.layout.manga_preview_item,parent,false);
             TextView name= convertView.findViewById(R.id.preview_item);
-            name.setText(m.get(position).name);
+            name.setText(m.get(position).name.split(" ")[0]);
             return convertView;
         }
     }
+
+
+
     class GetBitmap extends AsyncTask<String,Integer, Bitmap>{
         @Override
         protected Bitmap doInBackground(String... url){
