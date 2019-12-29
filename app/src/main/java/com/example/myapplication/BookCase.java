@@ -117,6 +117,7 @@ public class  BookCase
             }
         }
 
+
         FileWriter fw = null;
         try {
             fw = new FileWriter(f, false);
@@ -125,12 +126,14 @@ public class  BookCase
             f.createNewFile();
             fw = new FileWriter(f, false);
         }
+
         PrintWriter pw = new PrintWriter(fw);
+
         for(int i = 0;i<bookList.size();i++)
         {
-            pw.print(mangaInfo.name+";");
-            pw.print(mangaInfo.path+";");
-            pw.print(mangaInfo.imageUrl+";\n");
+            pw.print(bookList.get(i).name+";");
+            pw.print(bookList.get(i).path+";");
+            pw.print(bookList.get(i).imageUrl+";\n");
         }
         pw.close();
         fw.close();
