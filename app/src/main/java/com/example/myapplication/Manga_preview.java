@@ -76,11 +76,7 @@ public class Manga_preview extends AppCompatActivity {
         String imagaUrl_MP = getIntent().getExtras().getString("imagaUrl_MP");
         String name_MP = getIntent().getExtras().getString("name_MP");
 
-        try {
-            ToggleButton.setChecked(BookCase.isInBookList(path_MP));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         Log.e("path_MP",path_MP);
         Log.e("imagaUrl_MP",imagaUrl_MP);
@@ -90,10 +86,17 @@ public class Manga_preview extends AppCompatActivity {
         mangaInfo.imageUrl= imagaUrl_MP;
         mangaInfo.name =name_MP;
 
+        try {
+            ToggleButton.setChecked(BookCase.isInBookList(mangaInfo));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         getBitmap=new GetBitmap();
         getBitmap.execute(mangaInfo.imageUrl);
 
-        toggleButton_OnCheckedChangeListener CCTV = new toggleButton_OnCheckedChangeListener(path_MP);
+        toggleButton_OnCheckedChangeListener CCTV = new toggleButton_OnCheckedChangeListener(mangaInfo);
 
 
         ToggleButton.setOnCheckedChangeListener(CCTV);
@@ -106,10 +109,10 @@ public class Manga_preview extends AppCompatActivity {
 
     private class toggleButton_OnCheckedChangeListener implements CompoundButton.OnCheckedChangeListener
     {
-        String Path_MP = null;
-        public toggleButton_OnCheckedChangeListener(String URLPATH)
+        MangaInfo mangaInfoTEMP = null;
+        public toggleButton_OnCheckedChangeListener(MangaInfo mangaInfo)
         {
-            Path_MP = URLPATH;
+            mangaInfoTEMP = mangaInfo;
 
         }
         @Override
@@ -118,7 +121,7 @@ public class Manga_preview extends AppCompatActivity {
             if(isChecked) //當按鈕狀態為選取時
             {
                 try {
-                        BookCase.writeFileURL(Path_MP);
+                        BookCase.writeFileURL(mangaInfoTEMP);
                 }catch (IOException e )
                 {
                     Log.e("幹，出事",e.getMessage());
@@ -128,7 +131,7 @@ public class Manga_preview extends AppCompatActivity {
             else //當按鈕狀態為未選取時
             {
                 try {
-                    BookCase.RemoveFileURL(Path_MP);
+                    BookCase.RemoveFileURL(mangaInfoTEMP);
                 }catch (IOException e )
                 {
                     Log.e("幹，出事",e.getMessage());

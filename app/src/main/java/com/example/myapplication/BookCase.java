@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,8 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-class  BookCase
+import com.example.myapplication.Providers.Page.MangaInfo;
+public class  BookCase
 {
 
 
@@ -29,27 +30,29 @@ class  BookCase
        f = new File (fullName);
         System.out.println(f.getAbsolutePath());
     }
-    public Boolean isInBookList (String url) throws IOException {
-        ArrayList<String> bookList = new ArrayList<>();
+    public Boolean isInBookList (MangaInfo mangaInfo) throws IOException {
+        ArrayList<MangaInfo> bookList = new ArrayList<>();
         bookList = this.readFileURL();
         for(int i = 0;i<bookList.size();i++)
         {
-            System.out.println(url);
-            if(bookList.get(i).equals(url))
+            if(bookList.get(i).name.equals(mangaInfo.name))
             {
-                System.out.println("get URL" + url);
+                System.out.println("get URL" + mangaInfo.name);
                 return true;
             }
         }
         return false;
     }
-    public ArrayList<String> readFileURL() throws IOException {
+
+
+    public ArrayList<MangaInfo> readFileURL() throws IOException {
 
         FileReader fr = null;
         BufferedReader br =null;
-
-        ArrayList<String> bookList = new ArrayList<>();
+        ArrayList<MangaInfo> bookList = new ArrayList<>();
         String line;
+
+
         try {
             fr = new FileReader(f);
             br =new BufferedReader(fr );
@@ -61,19 +64,25 @@ class  BookCase
 
         while ((line = br.readLine()) != null)
         {
-            bookList.add(line);
+            MangaInfo mangaInfo = new MangaInfo();
+            mangaInfo.name = line.split(";")[0];
+            mangaInfo.path= line.split(";")[1];
+            mangaInfo.imageUrl = line.split(";")[2];
+
+            Log.e("BookCASE",mangaInfo.name+mangaInfo.path);
+            bookList.add(mangaInfo);
         }
 
+        for (MangaInfo mI:bookList) {
+            Log.e("BookCASE",mI.name+mI.path);
+        }
         fr.close();
         br.close();
         return bookList;
     }
-    public void writeFileURL(String write_str) throws IOException
+    public void writeFileURL(MangaInfo mangaInfo) throws IOException
     {
         FileWriter fw = null;
-
-
-
         try {
             fw = new FileWriter(f, true);
         }catch (FileNotFoundException e )
@@ -83,27 +92,30 @@ class  BookCase
         }
 
         PrintWriter pw = new PrintWriter(fw);
-        pw.print(write_str+"\n");
+        pw.print(mangaInfo.name+";");
+        pw.print(mangaInfo.path+";");
+        pw.print(mangaInfo.imageUrl+";\n");
+
         pw.close();
         fw.close();
 
     }
-    public void RemoveFileURL(String write_str) throws IOException
+
+
+
+
+    public void RemoveFileURL(MangaInfo mangaInfo) throws IOException
     {
-        ArrayList<String> fr = this.readFileURL();
-        String temp;
-        for(int i = 0;i<fr.size();i++)
+        ArrayList<MangaInfo> bookList = new ArrayList<>();
+        bookList = this.readFileURL();
+        for(int i = 0;i<bookList.size();i++)
         {
-            System.out.println(write_str);
-            if(fr.get(i).equals(write_str))
+            if(bookList.get(i).name.equals(mangaInfo.name))
             {
-                System.out.println("get URL" + write_str);
-                fr.remove(i);
-                break;
+                System.out.println("get URL" + mangaInfo.name);
+                bookList.remove(i);
             }
         }
-
-
 
         FileWriter fw = null;
         try {
@@ -114,9 +126,11 @@ class  BookCase
             fw = new FileWriter(f, false);
         }
         PrintWriter pw = new PrintWriter(fw);
-        for(int i = 0;i<fr.size();i++)
+        for(int i = 0;i<bookList.size();i++)
         {
-            pw.println(fr.get(i));
+            pw.print(mangaInfo.name+";");
+            pw.print(mangaInfo.path+";");
+            pw.print(mangaInfo.imageUrl+";\n");
         }
         pw.close();
         fw.close();
