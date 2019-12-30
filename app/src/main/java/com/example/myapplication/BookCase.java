@@ -21,13 +21,24 @@ public class  BookCase
 
     public BookCase()
     {
-        String path = Environment.getExternalStorageDirectory() + "/" + "MyFirstApp/";
-        File dir = new File(path);
+
+        //String path = Environment.getExternalStorageDirectory() + "/" + "MyFirstApp/";
+        File dir = new File(Environment.getExternalStorageDirectory() + "/");
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        String fullName = path + "BookCase.txt";
+        String fullName = Environment.getExternalStorageDirectory() + "/" + "BookCase.txt";
        f = new File (fullName);
+       try
+       {
+           if(!f.exists()) {
+               f.createNewFile();
+               Log.e("AAA","aa");
+           }
+           }catch (IOException e )
+       {
+           e.printStackTrace();
+       }
         System.out.println(f.getAbsolutePath());
     }
     public Boolean isInBookList (MangaInfo mangaInfo) throws IOException {
@@ -53,15 +64,9 @@ public class  BookCase
         String line;
 
 
-        try {
-            fr = new FileReader(f);
-            br =new BufferedReader(fr );
-        }catch(FileNotFoundException e ){
-            f.createNewFile();
-            fr = new FileReader(f);
-            br =new BufferedReader(fr );
-        }
 
+            fr = new FileReader(f);
+            br =new BufferedReader(fr );
         while ((line = br.readLine()) != null)
         {
             MangaInfo mangaInfo = new MangaInfo();
