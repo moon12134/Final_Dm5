@@ -133,18 +133,12 @@ public class  BookCase
         PrintWriter pw = new PrintWriter(fw);
         for(int i = 0;i<bookList.size();i++)
         {
-            pw.print(mangaInfo.name+";");
-            pw.print(mangaInfo.path+";");
-            pw.print(mangaInfo.imageUrl+";\n");
+            pw.print(bookList.get(i).name+";");
+            pw.print(bookList.get(i).path+";");
+            pw.print(bookList.get(i).imageUrl+";\n");
         }
         pw.close();
         fw.close();
 
     }
-
-
-
-
-
-
 }
