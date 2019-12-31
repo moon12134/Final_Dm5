@@ -5,49 +5,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="106dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/update_" />
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="350dp"
-        android:layout_height="108dp"
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="應用軟體實習期末專題"
+        android:textColor="@color/color2"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </ListView>
+    <TextView
+        android:id="@+id/tv_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/home"
+        android:textColor="@color/color1"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_1" />
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="370dp"
-        android:layout_height="393dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/listView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:layout_constraintVertical_bias="1.0" />
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Github："
+        android:textColor="@color/color1"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_2" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="106dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/listView"
-        app:srcCompat="@drawable/all_" />
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoLink="web"
+        android:textSize="15sp"
+        android:textColor="@color/color1"
+        android:text="\t\t\thttps://github.com/moon12134/Final_Dm5"
+        app:layout_constraintStart_toStartOf="@+id/tv_3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_3" />
+    <TextView
+        android:id="@+id/tv_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/system"
+        android:textColor="@color/color1"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

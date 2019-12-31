@@ -15,17 +15,17 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="name"
-        android:maxEms = "7"
-        android:textSize="15sp"
         android:gravity="center"
-        android:textStyle="bold"
-        />
+        android:maxLength="7"
+        android:text="name"
+        android:textSize="15sp"
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="status"
+        android:maxLength="7"
         android:textSize="10sp"
         android:gravity="center"
         />

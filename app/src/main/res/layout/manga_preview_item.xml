@@ -8,9 +8,10 @@
 
     <TextView
         android:id="@+id/preview_item"
-        android:layout_width="113dp"
-        android:layout_height="27dp"
-        android:maxEms="3"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:maxEms="5"
+        android:gravity="center"
         android:text="Cahpter_name"
         android:textSize="20dp"
         tools:layout_editor_absoluteX="17dp"

@@ -29,4 +29,7 @@
     <string name="genre_jiecao">绅士</string>
     <string name="genre_jizhan">機甲</string>
     <string name="genre_18_x">限制级</string>
+    <string name="home">日期：\n\t\t\t2020/01/03\n作者：\n\t\t\t電子三甲 106360106 黃合元\n\t\t\t電子三甲 106360143 游凱輝</string>
+    <string name="system">系統：\n\t\t\tPixel 2 API 28\n\t\t\tAndroid Studio 3.5.1\n\t\t使用前請先手動開啟儲存空間權限</string>
+
 </resources>
