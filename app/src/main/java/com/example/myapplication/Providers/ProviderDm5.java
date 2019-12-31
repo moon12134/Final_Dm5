@@ -25,11 +25,11 @@ public class ProviderDm5 {
     public static int genres[] = {
             R.string.genre_new, R.string.genre_list, R.string.genre_rexue, R.string.genre_aiqing, R.string.genre_xiaoyuan, R.string.genre_baihe, R.string.genre_danmei, R.string.genre_maoxian, R.string.genre_hougong,
             R.string.genre_kehuan, R.string.genre_zhanzheng, R.string.genre_xuanyi, R.string.genre_zhentan, R.string.genre_gaoxiao, R.string.genre_qihuan, R.string.genre_mofa, R.string.genre_kongbu, R.string.genre_dongfangshengui,
-            R.string.genre_lishi, R.string.genre_tongren, R.string.genre_jingji, R.string.genre_jiecao, R.string.genre_jizhan, R.string.genre_18_x};
+            R.string.genre_lishi, R.string.genre_tongren, R.string.genre_jingji, R.string.genre_jiecao, R.string.genre_jizhan};
     public static String genresUrl[] = {
             "new", "list", "rexue", "aiqing", "xiaoyuan", "baihe", "danmei", "maoxian", "hougong",
             "kehuan", "zhanzheng", "xuanyi", "zhentan", "gaoxiao", "qihuan", "mofa", "kongbu",
-            "dongfangshengui", "lishi", "tongren", "jingji", "jiecao", "jizhan", "18-x"};
+            "dongfangshengui", "lishi", "tongren", "jingji", "jiecao", "jizhan"};
 
     public ProviderDm5() {
     }

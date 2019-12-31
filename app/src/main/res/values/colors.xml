@@ -5,6 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorBackground">#FFAFAF</color>
     <color name="Textcolor">#FF0000</color>
-    <color name="BARcolor">#9C5C5C</color>
+    <color name="BARcolor">#F744494A</color>
     <color name="Ccolor">#FFEB3B</color>
+    <color name="color2">#DF20B7</color>
+    <color name="color1">#E6E0E6</color>
 </resources>
