@@ -11,7 +11,10 @@ Android Studio 3.5.1的程式
 使用前須要到app info更改儲存權限
 有以下兩個地方需要更改!!
 
-![image](https://github.com/moon12134/Final_Dm5/permission1.jpg)
+第一個地方
 
+![image](https://github.com/moon12134/Final_Dm5/blob/master/permission1.jpg)
 
-![image](https://github.com/moon12134/Final_Dm5/permission2.jpg)
+第二個地方
+
+![image](https://github.com/moon12134/Final_Dm5/blob/master/permission2.jpg)
