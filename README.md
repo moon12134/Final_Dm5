@@ -8,10 +8,10 @@
 **系統：**  
 	目前使用 Pixel 2 API 28虛擬機
 
-**漫畫目錄**
-![image](https://github.com/moon12134/Final_Dm5/blob/master/漫畫目錄.jpg)  
+**漫畫目錄**  
+![image](https://github.com/moon12134/Final_Dm5/blob/master/漫畫目錄.jpg)    
   
-**漫畫首頁**
+**漫畫首頁**  
 ![image](https://github.com/moon12134/Final_Dm5/blob/master/漫畫首頁.jpg)  
 
 Android Studio 3.5.1的程式
